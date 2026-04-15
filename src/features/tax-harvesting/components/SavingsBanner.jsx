@@ -8,15 +8,15 @@ function SavingsBanner({ value = 0 }) {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-semibold text-emerald-300">
-            You are harvesting losses smartly
+            Your taxable capital gains are reduced by:
           </p>
-          <p className="mt-1 text-sm text-emerald-100/80">
-            Your effective capital gains reduce based on the assets selected.
+          <p className="mt-1 text-xs text-emerald-100/80">
+            Based on the loss-making assets you have selected for harvesting.
           </p>
         </div>
 
-        <div className="rounded-xl bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-300">
-          Potential reduction: {formatCurrency(value)}
+        <div className="rounded-xl bg-emerald-500/15 px-4 py-2 text-lg font-bold text-emerald-100">
+          {formatCurrency(value)}
         </div>
       </div>
     </div>

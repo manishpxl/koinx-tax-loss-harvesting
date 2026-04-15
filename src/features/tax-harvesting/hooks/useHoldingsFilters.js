@@ -1,51 +1,53 @@
 import { useMemo, useState } from "react";
+import { SORT_DIRECTIONS, getNextSortDirection } from "../../../utils/sort";
+import { getFilteredAndSortedHoldings } from "../taxHarvesting.selectors";
+import { getInitialVisibleCount } from "../taxHarvesting.helpers";
 
-const DEFAULT_VISIBLE_COUNT = 4;
+const DEFAULT_VISIBLE = getInitialVisibleCount();
 
 export function useHoldingsFilters(holdings = []) {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState("");
-  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.NONE);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const processedHoldings = useMemo(() => {
-    let filtered = [...holdings];
-
-    if (search.trim()) {
-      const query = search.toLowerCase();
-      filtered = filtered.filter(
-        (item) =>
-          item.coin?.toLowerCase().includes(query) ||
-          item.coinName?.toLowerCase().includes(query)
-      );
-    }
-
-    if (sortKey) {
-      filtered.sort((a, b) => {
-        const aValue = Number(a[sortKey] || 0);
-        const bValue = Number(b[sortKey] || 0);
-
-        if (sortDirection === "asc") return aValue - bValue;
-        return bValue - aValue;
-      });
-    }
-
-    return filtered;
+    return getFilteredAndSortedHoldings({
+      holdings,
+      search,
+      sortKey,
+      sortDirection,
+    });
   }, [holdings, search, sortKey, sortDirection]);
 
-  const visibleHoldings = isExpanded
-    ? processedHoldings
-    : processedHoldings.slice(0, DEFAULT_VISIBLE_COUNT);
+  const visibleHoldings = useMemo(() => {
+    if (isExpanded) return processedHoldings;
+    return processedHoldings.slice(0, DEFAULT_VISIBLE);
+  }, [processedHoldings, isExpanded]);
 
-  const hasToggle = processedHoldings.length > DEFAULT_VISIBLE_COUNT;
+  const hasMore = processedHoldings.length > DEFAULT_VISIBLE;
 
-  function handleSort(key) {
-    if (sortKey === key) {
-      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
-    } else {
-      setSortKey(key);
-      setSortDirection("desc");
+  function handleSearchChange(value) {
+    setSearch(value);
+    setIsExpanded(false); // search change par wapas 4 pe aa jao
+  }
+
+  function handleSort(columnKey) {
+    if (sortKey !== columnKey) {
+      setSortKey(columnKey);
+      setSortDirection(SORT_DIRECTIONS.ASC);
+      return;
     }
+
+    const nextDirection = getNextSortDirection(sortDirection);
+
+    if (nextDirection === SORT_DIRECTIONS.NONE) {
+      setSortKey("");
+      setSortDirection(SORT_DIRECTIONS.NONE);
+      return;
+    }
+
+    setSortDirection(nextDirection);
   }
 
   function toggleExpanded() {
@@ -58,9 +60,9 @@ export function useHoldingsFilters(holdings = []) {
     sortDirection,
     visibleHoldings,
     processedHoldings,
-    hasMore: hasToggle,
+    hasMore,
     isExpanded,
-    setSearch,
+    setSearch: handleSearchChange,
     handleSort,
     toggleExpanded,
   };

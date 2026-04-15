@@ -12,7 +12,6 @@ function HoldingsToolbar({
         <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
           Search Holdings
         </label>
-
         <input
           type="text"
           value={search}
@@ -23,9 +22,13 @@ function HoldingsToolbar({
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-        <div className="rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Selected</p>
-          <p className="mt-1 text-lg font-semibold text-white">{selectedCount}</p>
+        <div className="rounded-2xl border border-white/5 bg-slate-900/70 px-5 py-3 shadow-sm shadow-black/20">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-slate-500">
+            Selected
+          </p>
+          <p className="mt-1 text-xl font-semibold text-white">
+            {selectedCount}
+          </p>
         </div>
 
         <Button
