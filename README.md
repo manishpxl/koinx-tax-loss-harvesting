@@ -1,6 +1,6 @@
 # KoinX Tax Loss Harvesting Dashboard
 
-A responsive React + Vite + Tailwind CSS dashboard built for the KoinX Frontend Intern Assignment. It helps users simulate tax loss harvesting by selecting holdings and instantly seeing the impact on their effective capital gains.
+A responsive React + Vite + Tailwind CSS dashboard built for the **KoinX Frontend Intern Assignment**. It helps users simulate tax loss harvesting by selecting holdings and instantly seeing the impact on their effective capital gains.
 
 ## Overview
 
@@ -107,15 +107,16 @@ npm run build
 npm run preview
 ```
 
-## How the logic works
+## How the Logic Works
 
 - Capital gains are loaded from a mocked API source.
 - Holdings are loaded from a mocked API source.
-- When a user selects a holding, that asset’s STCG and LTCG values are included in harvesting impact calculation.
-- Positive gains reduce profits.
+- When a user selects a holding, that asset’s STCG and LTCG values are included in the harvesting impact calculation.
+- Positive gains increase profits.
 - Negative gains increase losses harvested.
-- The “After Harvesting” card updates automatically based on current selected rows.
+- The “After Harvesting” card updates automatically based on the currently selected rows.
 - Effective capital gains are recalculated live.
+- A savings banner is shown only when post-harvesting effective capital gains are lower than pre-harvesting gains.
 
 ## UI / UX Notes
 
@@ -141,4 +142,5 @@ npm run preview
 
 ## Author
 
-Built by Manish Kumar
+Built by [Manish Kumar](https://manish-kumar-portfolio-website.netlify.app/)  
+Software Engineer | MERN Stack Developer
